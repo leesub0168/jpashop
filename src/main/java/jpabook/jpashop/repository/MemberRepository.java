@@ -5,15 +5,17 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.PersistenceUnit;
 import jpabook.jpashop.domain.Member;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
+@RequiredArgsConstructor
 public class MemberRepository {
 
-    @PersistenceContext // @PersistenceContext를 사용하면 스프링이 EntityManager를 생성해서 주입해줌
-    private EntityManager em;
+//    @PersistenceContext // @PersistenceContext를 사용하면 스프링이 EntityManager를 생성해서 주입해줌
+    private final EntityManager em;
 
     /**
     @PersistenceUnit // EntityManagerFactory를 주입받고 싶다면, @PersistenceUnit를 사용하면 됨
