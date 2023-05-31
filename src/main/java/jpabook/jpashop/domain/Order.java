@@ -1,7 +1,9 @@
 package jpabook.jpashop.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.aspectj.weaver.ast.Or;
 
@@ -12,6 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "orders")
 @Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order {
 
     @Id @GeneratedValue
@@ -51,6 +54,14 @@ public class Order {
         delivery.setOrder(this);
     }
 
+
+    /**
+     * 엔티티에 비즈니스 로직을 두고, 서비스 계층에는 엔티티에 필요한 요청을 위임하는 역할만 두는 것을
+     * 도메인 모델 패턴이라고 함 -> ORM 기술을 사용할때 많이 사용하는 패턴
+     *
+     * 반대로 엔티티에는 비즈니스 로직이 거의 없고, 서비스 계층에서 비즈니스 로직을 처리하는 것을
+     * 트랜잭션 스크립트 패턴이라고 한다. -> ORM 기술을 사용하지 않고 직접 SQL을 작성하는 경우 많이 사용
+     * */
     // 주문 생성 메서드
     public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems) {
         Order order = new Order();
