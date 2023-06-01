@@ -11,6 +11,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
@@ -38,4 +40,20 @@ public class MemberController {
 
         return "redirect:/";
     }
+
+    @GetMapping("/members")
+    public String list(Model model) {
+        List<Member> members = memberService.findMembers();
+        model.addAttribute("members", members);
+
+        return "members/memberList";
+    }
+
+    /**
+     *
+     * API를 만드는 경우에는
+     * 엔티티를 외부로 전달해서는 안된다.
+     * 보안 이슈 + API는 외부에서 사용하기 때문에,
+     * 엔티티가 수정되면 API 스펙이 변경되게 됨.
+     * */
 }
