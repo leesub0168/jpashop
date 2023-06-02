@@ -10,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController // @Controller 와 @ResponseBody 를 합친 어노테이션
 @RequiredArgsConstructor
 public class MemberApiController {
@@ -49,10 +52,41 @@ public class MemberApiController {
         return new UpdateMemberResponse(findMember.getId(), findMember.getName());
     }
 
+    @GetMapping("/api/v1/members")
+    public List<Member> membersV1() {
+        return memberService.findMembers();
+    }
+
+    @GetMapping("/api/v2/members")
+    public Result membersV2() {
+        List<Member> findMembers = memberService.findMembers();
+        List<MemberDto> collect = findMembers.stream()
+                .map(m -> new MemberDto(m.getName()))
+                .collect(Collectors.toList());
+
+        /**
+         * 유연성 & 확장성을 위해 결과값을 한번 감싸서 반환하는 것이 좋음.
+         * ex. 결과 데이터외에 데이터 건수를 내려줘야 하거나, 추가적인 데이터를 줘야하는 경우
+         * */
+        return new Result(collect, collect.size());
+    }
+
+
+    @Data
+    @AllArgsConstructor
+    static class Result<T> {
+        private T data;
+        private int count;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class MemberDto {
+        private String name;
+    }
 
     @Data
     static class CreateMemberRequest {
-
         @NotEmpty
         private String name;
     }
@@ -77,4 +111,5 @@ public class MemberApiController {
         private Long id;
         private String name;
     }
+
 }
