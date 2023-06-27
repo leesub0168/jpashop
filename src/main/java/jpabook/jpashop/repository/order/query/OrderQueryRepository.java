@@ -15,10 +15,10 @@ public class OrderQueryRepository {
     private final EntityManager em;
 
     public List<OrderQueryDto> findOrderQueryDtos() {
-        List<OrderQueryDto> result = findOrders();
+        List<OrderQueryDto> result = findOrders(); // 쿼리 1번
 
         result.forEach(o -> {
-            List<OrderItemQueryDto> orderItems = findOrderItems(o.getOrderId());
+            List<OrderItemQueryDto> orderItems = findOrderItems(o.getOrderId()); // 쿼리 N번
             o.setOrderItems(orderItems);
         });
         return result;
@@ -43,9 +43,9 @@ public class OrderQueryRepository {
     }
 
     public List<OrderQueryDto> findAllByDto_optimization() {
-        List<OrderQueryDto> result = findOrders();
+        List<OrderQueryDto> result = findOrders(); // 쿼리 1번
 
-        Map<Long, List<OrderItemQueryDto>> orderItemMap = findOrderItemMap(toOrderIds(result));
+        Map<Long, List<OrderItemQueryDto>> orderItemMap = findOrderItemMap(toOrderIds(result)); // 쿼리 1번
 
         result.forEach(o -> o.setOrderItems(orderItemMap.get(o.getOrderId())));
 
