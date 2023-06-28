@@ -9,10 +9,10 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
-class MemberRepositoryTest {
+class MemberRepositoryOldTest {
 
     @Autowired
-    MemberRepository memberRepository;
+    MemberRepositoryOld memberRepositoryOld;
 
     @Test
     @Transactional
@@ -27,8 +27,8 @@ class MemberRepositoryTest {
         member.setName("memberA");
 
         //when
-        memberRepository.save(member);
-        Member findMember = memberRepository.findOne(member.getId());
+        memberRepositoryOld.save(member);
+        Member findMember = memberRepositoryOld.findOne(member.getId());
 
         //then
         Assertions.assertThat(findMember.getId()).isEqualTo(member.getId());

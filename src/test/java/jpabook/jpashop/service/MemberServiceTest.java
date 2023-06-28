@@ -3,13 +3,10 @@ package jpabook.jpashop.service;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jpabook.jpashop.domain.Member;
-import jpabook.jpashop.repository.MemberRepository;
+import jpabook.jpashop.repository.MemberRepositoryOld;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,7 +19,7 @@ class MemberServiceTest { // 테스트는 완전히 격리된 환경으로 진�
     MemberService memberService;
 
     @Autowired
-    MemberRepository memberRepository;
+    MemberRepositoryOld memberRepositoryOld;
 
     @PersistenceContext
     EntityManager em;
@@ -42,7 +39,7 @@ class MemberServiceTest { // 테스트는 완전히 격리된 환경으로 진�
          * 쿼리를 확인하고 싶다면 flush나 rollback-false 세팅하면됨
          * em.flush() , @Rollback(value = false)
          */
-         assertEquals(member, memberRepository.findOne(saveId));
+         assertEquals(member, memberRepositoryOld.findOne(saveId));
     }
     
     @Test
